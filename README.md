@@ -5,6 +5,6 @@ Python爬虫初试身手，仅供学习参考，请在24小时内删除文件，
 ## 使用方法
 ```
 git clone https://github.com/Yao-Jiayi/getMusic
-cd gitMusic-main
+cd gitMusic
 python getMusic.py
 ```
