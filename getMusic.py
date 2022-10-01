@@ -1,4 +1,5 @@
 from urllib.request import urlopen
+from playsound import playsound
 import urllib.parse
 import json
 import sys
@@ -6,7 +7,7 @@ import os
 
 
 def getMusic():
-    keyword = urllib.parse.urlencode({"keyword": input("Enter Music Name:")})
+    keyword = urllib.parse.urlencode({"keyword": input("输入音乐名:")})
     keyword = keyword[keyword.find("=") + 1 :]
     url = (
         "https://songsearch.kugou.com/song_search_v2?callback=jQuery1124042761514747027074_1580194546707&keyword="
@@ -34,7 +35,7 @@ def getMusic():
     for i in range(len(list_music)):
         print("{}-:{}".format(i + 1, list_music[i]))
         
-    music_id_1 = int(input("Enter Number:"))
+    music_id_1 = int(input("输入数字:"))
     url = (
         "https://wwwapi.kugou.com/yy/index.php?r=play/getdata&hash="
         + Music_Hash[list_music_1[music_id_1 - 1]]
@@ -49,22 +50,25 @@ def getMusic():
     try:
         music_href = dict_2["data"]["play_backup_url"]
         music_content = urlopen(url=music_href).read()
-        try:
-            os.mkdir("./Download")
-        except Exception as e:
-            print(e, "But Program is Still Running")
-        finally:
-            music_path = "./Download/" + list_music[music_id_1 - 1] + ".mp3"
+
+        music_path = list_music[music_id_1 - 1] + ".mp3"
             
-            with open(music_path, "wb") as f:
-                print("Downloading...")
-                f.write(music_content)
-                
-                print("{}.mp3 is Download Complete!".format(list_music[music_id_1 - 1]))
+        with open(music_path, "wb") as f:
+            print("下载中...")
+            f.write(music_content)
+            print("{}.mp3 下载成功!".format(list_music[music_id_1 - 1]))
     except:
-        print("Sorry, Download Failed!")
-
-
+        print("对不起,该歌曲无权下载!")
+    else:
+        if input("你希望播放吗('y'或 'n'):") == 'y':
+            print("开始播放{}.mp3".format(list_music[music_id_1 - 1]))
+            while True:
+                try:
+                    playsound(r"./{}.mp3".format(list_music[music_id_1 - 1]))
+                except:
+                    playsound(r"./{}.mp3".format(list_music[music_id_1 - 1]))
+                else:
+                    break
 if __name__ == "__main__":
     while True:
         returnValue = os.system("cls")
