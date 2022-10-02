@@ -1,9 +1,9 @@
 from urllib.request import urlopen
-from playsound import playsound
 import urllib.parse
 import json
 import sys
 import os
+import pygame
 
 
 def getMusic():
@@ -58,17 +58,23 @@ def getMusic():
             f.write(music_content)
             print("{}.mp3 下载成功!".format(list_music[music_id_1 - 1]))
     except:
-        print("对不起,该歌曲无权下载!")
+        input("对不起,该歌曲无权下载!")
     else:
         if input("你希望播放吗('y'或 'n'):") == 'y':
             print("开始播放{}.mp3".format(list_music[music_id_1 - 1]))
+            pygame.init()
+            pygame.mixer.init()
+            track = pygame.mixer.music.load(r"{}.mp3".format(list_music[music_id_1 - 1]))
+            pygame.mixer.music.play()
+            i = input("输入s停止,p暂停,a再次开始:")
             while True:
-                try:
-                    playsound(r"./{}.mp3".format(list_music[music_id_1 - 1]))
-                except:
-                    playsound(r"./{}.mp3".format(list_music[music_id_1 - 1]))
-                else:
+                if i == 's':
+                    pygame.mixer.music.stop()
                     break
+                elif i == 'p':
+                    pygame.mixer.music.pause()
+                elif i == 'a':
+                    pygame.mixer.music.play()
 if __name__ == "__main__":
     while True:
         returnValue = os.system("cls")
